@@ -15,7 +15,7 @@ public class HelloVerticle extends AbstractVerticle {
 
         vertx.eventBus().consumer("hello.name.addr", msg -> {
             String name = (String) msg.body();
-            msg.reply(String.format("Hello %s, from %name! ", name, verticleId));
+            msg.reply(String.format("Hello %s, from %s! ", name, verticleId));
         });
     }
 }
