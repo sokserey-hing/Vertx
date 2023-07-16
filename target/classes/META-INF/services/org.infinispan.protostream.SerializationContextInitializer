@@ -1,0 +1,7 @@
+org.infinispan.protostream.types.protobuf.TimestampSchemaImpl
+org.infinispan.protostream.types.protobuf.EmptySchemaImpl
+org.infinispan.protostream.types.java.CommonTypesSchema
+org.infinispan.protostream.types.protobuf.DurationSchemaImpl
+org.infinispan.protostream.types.protobuf.AnySchemaImpl
+org.infinispan.protostream.types.protobuf.WrappersSchemaImpl
+org.infinispan.protostream.types.java.CommonContainerTypesSchema

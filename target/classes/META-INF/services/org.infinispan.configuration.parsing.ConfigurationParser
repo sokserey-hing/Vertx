@@ -1,0 +1,5 @@
+org.infinispan.configuration.parsing.CacheParser
+org.infinispan.configuration.parsing.Parser
+org.infinispan.lock.configuration.ClusteredLockConfigurationParser
+org.infinispan.counter.configuration.CounterConfigurationParser
+org.infinispan.counter.configuration.CounterParser

@@ -1,0 +1,2 @@
+io.vertx.lang.groovy.GroovyVerticleFactory
+io.vertx.lang.js.JSVerticleFactory

@@ -1,0 +1,4 @@
+org.infinispan.CoreModuleImpl
+org.infinispan.multimap.impl.MultimapModuleImpl
+org.infinispan.lock.impl.ClusteredLockModuleImpl
+org.infinispan.counter.impl.ClusteredCounterModuleImpl
