@@ -17,19 +17,19 @@ public class MainVerticle extends AbstractVerticle {
     @Override
     public void start(Promise<Void> start) {
 
-        // vertx.deployVerticle(new HelloVerticle());
-        vertx.deployVerticle("src/main/resources/Hello.groovy");
+        vertx.deployVerticle(new HelloVerticle());
+        //vertx.deployVerticle("src/main/resources/Hello.groovy");
         //vertx.deployVerticle("src/main/resources/Hello.js");
         Router router = Router.router(vertx);
 
-        // router.route().handler(ctx -> {
-        //     String authToken = ctx.request().getHeader("AUTH_TOKEN");
-        //     if (authToken != null && "mySuperSecretAuthToken".contentEquals(authToken)) {
-        //         ctx.next();
-        //     } else {
-        //         ctx.response().setStatusCode(401).setStatusMessage("UNAUTHORIZED").end();
-        //     }
-        // });
+        router.route().handler(ctx -> {
+            String authToken = ctx.request().getHeader("AUTH_TOKEN");
+            if (authToken != null && "mySuperSecretAuthToken".contentEquals(authToken)) {
+                ctx.next();
+            } else {
+                ctx.response().setStatusCode(401).setStatusMessage("UNAUTHORIZED").end();
+            }
+        });
 
         router.get("/api/v1/hello").handler(this::helloHandler);
         router.get("/api/v1/hello/:name").handler(this::helloByNameHandler);
@@ -39,6 +39,7 @@ public class MainVerticle extends AbstractVerticle {
                 .setType("file")
                 .setFormat("json")
                 .setConfig(new JsonObject().put("path", "src/main/resources/config.json"));
+                
 
         ConfigRetrieverOptions opts = new ConfigRetrieverOptions()
                 .addStore(defaultConfig);
