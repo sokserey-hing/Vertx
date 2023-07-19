@@ -10,7 +10,13 @@ import io.vertx.core.Promise;
 import io.vertx.core.Handler;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.handler.CSRFHandler;
+import io.vertx.ext.web.handler.CorsHandler;
+import io.vertx.ext.web.handler.LoggerHandler;
+import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.handler.StaticHandler;
+import io.vertx.ext.web.sstore.LocalSessionStore;
+import io.vertx.ext.web.sstore.SessionStore;
 
 public class MainVerticle extends AbstractVerticle {
 
@@ -31,6 +37,13 @@ public class MainVerticle extends AbstractVerticle {
             }
         });
 
+        SessionStore store = LocalSessionStore.create(vertx);
+        router.route().handler(LoggerHandler.create());
+        router.route().handler(SessionHandler.create(store));
+        router.route().handler(CorsHandler.create("localhost"));
+        router.route().handler(CSRFHandler.create(vertx, "b9JnSvQ+8SN04YqKixZXI3lRykJHcq+Q6C1fWw5mvWs7AUFSCBsnaHBmWdEj7yr+7aTLR7kqU91I")); // dd if=/dev/urandom bs=384 count=1 | base64  -> to generate secrete from cli 
+
+        
         router.get("/api/v1/hello").handler(this::helloHandler);
         router.get("/api/v1/hello/:name").handler(this::helloByNameHandler);
         router.route().handler(StaticHandler.create("src/main/resources/web").setIndexPage("index.html"));
@@ -40,9 +53,13 @@ public class MainVerticle extends AbstractVerticle {
                 .setFormat("json")
                 .setConfig(new JsonObject().put("path", "src/main/resources/config.json"));
                 
+        ConfigStoreOptions cliConfig = new ConfigStoreOptions()
+                .setType("json")
+                .setConfig(config());
 
         ConfigRetrieverOptions opts = new ConfigRetrieverOptions()
-                .addStore(defaultConfig);
+                .addStore(defaultConfig)
+                .addStore(cliConfig);
         ConfigRetriever cfgRetriever = ConfigRetriever.create(vertx, opts);
 
         Handler<AsyncResult<JsonObject>> handler = asyncResullt -> this.handleConfigResult(start, router, asyncResullt);
